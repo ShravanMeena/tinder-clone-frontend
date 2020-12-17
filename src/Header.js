@@ -14,6 +14,8 @@ export default class Header extends Component {
           alignItems: "center",
           justifyContent: "space-around",
           borderBottom: "1px solid #f9f9f9",
+          background: "#ffffff",
+          zIndex: 100,
         }}>
         <IconButton>
           <PersonIcon fontSize='large' />

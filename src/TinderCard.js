@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import TinderCard from "react-tinder-card";
 import "./App.css";
 
+import { shuffle } from "lodash";
+
 import axios from "axios";
 
 export default class Card extends Component {
@@ -19,7 +21,7 @@ export default class Card extends Component {
     })
       .then((res) => {
         this.setState(() => ({
-          data: res.data,
+          data: shuffle(res.data),
         }));
       })
       .catch((err) => {
