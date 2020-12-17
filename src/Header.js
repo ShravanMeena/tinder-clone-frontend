@@ -30,6 +30,15 @@ export default class Header extends Component {
       alert("Required");
       return;
     }
+    var res = this.state.imgUrl.match(
+      /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+    );
+
+    if (!res) {
+      alert("Please provide valid image url!");
+      return;
+    }
+
     const data = {
       title: this.state.title,
       imgUrl: this.state.imgUrl,

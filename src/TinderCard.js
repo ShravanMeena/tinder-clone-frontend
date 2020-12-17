@@ -5,7 +5,7 @@ import "./App.css";
 import { shuffle } from "lodash";
 
 import axios from "axios";
-
+import Test from "./assets/logo.png";
 export default class Card extends Component {
   constructor() {
     super();
@@ -40,15 +40,24 @@ export default class Card extends Component {
   render() {
     return (
       <div className='cardContainer'>
-        {this.state.data.map((character) => (
+        {this.state.data.map((item) => (
           <TinderCard
             className='swipe'
-            key={character.name}
-            onSwipe={(dir) => this.onSwipe(dir, character.name)}
-            onCardLeftScreen={() => this.onCardLeftScreen(character.name)}>
+            key={item.name}
+            onSwipe={(dir) => this.onSwipe(dir, item.name)}
+            onCardLeftScreen={() => this.onCardLeftScreen(item.name)}>
             <div className='imgContainer'>
-              <img src={character.imgUrl} />
-              <h3>{character.title}</h3>
+              <img
+                src={
+                  item.imgUrl.match(
+                    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+                  )
+                    ? item.imgUrl
+                    : Test
+                }
+              />
+
+              <h3>{item.title}</h3>
             </div>
           </TinderCard>
         ))}
