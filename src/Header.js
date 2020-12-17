@@ -2,9 +2,71 @@ import React, { Component } from "react";
 import PersonIcon from "@material-ui/icons/Person";
 import IconButton from "@material-ui/core/IconButton";
 import ForumIcon from "@material-ui/icons/Forum";
-import { Button } from "@material-ui/core";
-import Logo from "./assets/logo.png";
+import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
+import axios from "axios";
+
+import {
+  FormControl,
+  InputLabel,
+  Input,
+  FormHelperText,
+  Button,
+} from "@material-ui/core";
+
+import Modal from "@material-ui/core/Modal";
+
 export default class Header extends Component {
+  constructor() {
+    super();
+    this.state = {
+      setOpen: false,
+      title: "",
+      imgUrl: "",
+    };
+  }
+
+  onSubmit = () => {
+    if (!this.state.title && !this.state.imgUrl) {
+      alert("Required");
+      return;
+    }
+    const data = {
+      title: this.state.title,
+      imgUrl: this.state.imgUrl,
+    };
+    axios({
+      method: "post",
+      url: "https://tinder-kinder.herokuapp.com/tinder/cards/",
+      data: data,
+    })
+      .then((res) => {
+        this.setState({
+          setOpen: false,
+        });
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log("Error : " + err);
+      });
+  };
+  handleOpen = () => {
+    this.setState({
+      setOpen: true,
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      setOpen: false,
+    });
+  };
+
+  handleChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
+
   render() {
     return (
       <div
@@ -17,15 +79,69 @@ export default class Header extends Component {
           background: "#ffffff",
           zIndex: 100,
         }}>
+        <Modal
+          open={this.state.setOpen}
+          onClose={this.handleClose}
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            outline: "none",
+          }}>
+          <div
+            style={{
+              position: "absolute",
+              width: 300,
+              height: 300,
+              background: "#ffff",
+              borderRadius: 10,
+              padding: 20,
+            }}>
+            <FormControl required style={{ width: "100%" }}>
+              <InputLabel htmlFor='my-input'>Enter your name</InputLabel>
+              <Input
+                name='title'
+                onChange={(event) => this.handleChange(event)}
+                id='my-input'
+                aria-describedby='my-helper-text'
+              />
+              <FormHelperText id='my-helper-text'>
+                We'll never share your name.
+              </FormHelperText>
+            </FormControl>
+
+            <FormControl required style={{ width: "100%", marginTop: 10 }}>
+              <InputLabel htmlFor='my-input'>
+                Enter URL of your image
+              </InputLabel>
+              <Input
+                name='imgUrl'
+                onChange={(event) => this.handleChange(event)}
+                id='my-input'
+                aria-describedby='my-helper-text'
+              />
+              <FormHelperText id='my-helper-text'>
+                We'll never share your url image.
+              </FormHelperText>
+            </FormControl>
+            <Button
+              onClick={() => this.onSubmit()}
+              style={{ marginTop: 50 }}
+              variant='contained'
+              color='primary'>
+              Submit
+            </Button>
+          </div>
+        </Modal>
+
         <IconButton>
           <PersonIcon fontSize='large' />
         </IconButton>
 
-        <IconButton>
-          <img
-            src={Logo}
-            style={{ width: "30px", height: "30px", objectFit: "contain" }}
-          />
+        <IconButton onClick={this.handleOpen}>
+          <AddToPhotosIcon style={{ fontSize: "50px" }} />
         </IconButton>
 
         <IconButton>
