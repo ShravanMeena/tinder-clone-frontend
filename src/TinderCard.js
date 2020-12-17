@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import TinderCard from "react-tinder-card";
-import URL from "./assets/1.jpg";
 import "./App.css";
 
 import axios from "axios";
